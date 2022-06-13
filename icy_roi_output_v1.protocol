@@ -1,0 +1,71 @@
+<protocol VERSION="4">
+<blocks>
+<workflow ID="1048291736" blockType="plugins.adufour.blocks.lang.SequenceFileBatch" className="plugins.adufour.blocks.lang.SequenceFileBatch" collapsed="false" definedName="Sequence file batch" height="762" keepsResults="true" width="1566" xLocation="0" yLocation="0">
+<blocks>
+<block ID="1603069907" blockType="plugins.adufour.blocks.tools.roi.GetROIFromSequence" className="plugins.adufour.blocks.tools.roi.GetROIFromSequence" collapsed="false" definedName="Get ROI from sequence" height="149" keepsResults="true" width="378" xLocation="296" yLocation="0">
+<variables>
+<input>
+<variable ID="input sequence" name="Source" runtime="false" visible="true"/>
+<variable ID="selection state of ROI to extract" name="ROI to get" runtime="false" value="ALL" visible="true"/>
+</input>
+<output>
+<variable ID="extracted rois" name="List of ROI" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="1347234949" blockType="plugins.adufour.roi.ROIMeasures" className="plugins.adufour.roi.ROIMeasures" collapsed="false" definedName="ROI Statistics" height="128" keepsResults="true" width="287" xLocation="780" yLocation="58">
+<variables>
+<input>
+<variable ID="measures" name="Select features..." runtime="false" value="26388279287820" visible="true"/>
+<variable ID="Regions of interest" name="Regions of interest" runtime="false" visible="true"/>
+<variable ID="Sequence" name="Sequence" runtime="false" visible="true"/>
+</input>
+<output>
+<variable ID="Workbook" name="Workbook" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="450422160" blockType="plugins.adufour.blocks.tools.io.WorkbookToFile" className="plugins.adufour.blocks.tools.io.WorkbookToFile" collapsed="false" definedName="Workbook to file" height="482" keepsResults="true" width="1127" xLocation="23" yLocation="207">
+<variables>
+<input>
+<variable ID="workbook" name="workbook" runtime="false" visible="true"/>
+<variable ID="file format" name="file format" runtime="false" value="Text" visible="true"/>
+<variable ID="output file" name="output file" runtime="false" value="/VHL_Projecten/006_plakplaten/0003_harlingen/02_processed_data/Leonard_annotaties_compleet_2022-01-29/SpringStaart_correction_2021-02/springstaart_op.txt" visible="true"/>
+<variable ID="If file exists" name="If file exists" runtime="false" value="Merge_sheets___excluding_first_row" visible="true"/>
+</input>
+<output/>
+</variables>
+</block>
+</blocks>
+<links>
+<link dstBlockID="1603069907" dstVarID="input sequence" srcBlockID="1048291736" srcVarID="Sequence"/>
+<link dstBlockID="1347234949" dstVarID="Sequence" srcBlockID="1603069907" srcVarID="input sequence"/>
+<link dstBlockID="1347234949" dstVarID="Regions of interest" srcBlockID="1603069907" srcVarID="extracted rois"/>
+<link dstBlockID="450422160" dstVarID="workbook" srcBlockID="1347234949" srcVarID="Workbook"/>
+</links>
+<variables>
+<input>
+<variable ID="folder" blockID="1048291736" value="/VHL_Projecten/006_plakplaten/0003_harlingen/02_processed_data/Leonard_annotaties_compleet_2022-01-29/SpringStaart_correction_2021-02/Harlingen SS Leonhard" visible="true"/>
+<variable ID="extension" blockID="1048291736" value="" visible="true"/>
+<variable ID="Include sub-folders" blockID="1048291736" value="false" visible="true"/>
+<variable ID="1603069907:input sequence" blockID="1603069907" value="/VHL_Projecten/006_plakplaten/0003_harlingen/02_processed_data/Leonard_annotaties_compleet_2022-01-29/SpringStaart_correction_2021-02/Harlingen SS Leonhard/0003_harlingen_20210812_0050.jpg" visible="false"/>
+<variable ID="1603069907:selection state of ROI to extract" blockID="1603069907" value="ALL" visible="false"/>
+<variable ID="1347234949:measures" blockID="1347234949" value="26388279287820" visible="false"/>
+<variable ID="1347234949:Regions of interest" blockID="1347234949" value="188 ROI" visible="false"/>
+<variable ID="1347234949:Sequence" blockID="1347234949" value="/VHL_Projecten/006_plakplaten/0003_harlingen/02_processed_data/Leonard_annotaties_compleet_2022-01-29/SpringStaart_correction_2021-02/Harlingen SS Leonhard/0003_harlingen_20210812_0050.jpg" visible="false"/>
+<variable ID="450422160:workbook" blockID="450422160" value="" visible="false"/>
+<variable ID="450422160:file format" blockID="450422160" value="Text" visible="false"/>
+<variable ID="450422160:output file" blockID="450422160" value="/VHL_Projecten/006_plakplaten/0003_harlingen/02_processed_data/Leonard_annotaties_compleet_2022-01-29/SpringStaart_correction_2021-02/springstaart_op.txt" visible="false"/>
+<variable ID="450422160:If file exists" blockID="450422160" value="Merge_sheets___excluding_first_row" visible="false"/>
+</input>
+<output>
+<variable ID="iteration" blockID="1048291736" visible="true"/>
+<variable ID="Sequence" blockID="1048291736" visible="true"/>
+<variable ID="1603069907:extracted rois" blockID="1603069907" visible="false"/>
+<variable ID="1347234949:Workbook" blockID="1347234949" visible="false"/>
+</output>
+</variables>
+</workflow>
+</blocks>
+<links/>
+</protocol>
