@@ -1,0 +1,250 @@
+<protocol VERSION="4">
+<blocks>
+<workflow ID="1078018877" blockType="plugins.adufour.blocks.lang.SequenceFileBatch" className="plugins.adufour.blocks.lang.SequenceFileBatch" collapsed="false" definedName="Sequence file batch" height="1103" keepsResults="true" width="1649" xLocation="4" yLocation="0">
+<blocks>
+<block ID="1775930538" blockType="plugins.adufour.blocks.tools.roi.GetROIFromSequence" className="plugins.adufour.blocks.tools.roi.GetROIFromSequence" collapsed="false" definedName="Get ROI from sequence" height="104" keepsResults="true" width="262" xLocation="284" yLocation="0">
+<variables>
+<input>
+<variable ID="input sequence" name="Source" runtime="false" visible="true"/>
+<variable ID="selection state of ROI to extract" name="ROI to get" runtime="false" value="ALL" visible="true"/>
+</input>
+<output>
+<variable ID="extracted rois" name="List of ROI" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="708573638" blockType="plugins.adufour.blocks.tools.ListSize" className="plugins.adufour.blocks.tools.ListSize" collapsed="false" definedName="List size" height="83" keepsResults="true" width="150" xLocation="721" yLocation="41">
+<variables>
+<input>
+<variable ID="list" name="List" runtime="false" type="[Licy.roi.ROI;" visible="true"/>
+</input>
+<output>
+<variable ID="size" name="Size" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<workflow ID="1531107574" blockType="plugins.adufour.blocks.lang.RangeLoop" className="plugins.adufour.blocks.lang.RangeLoop" collapsed="false" definedName="Range loop" height="822" keepsResults="true" width="1594" xLocation="13" yLocation="205">
+<blocks>
+<block ID="1042307889" blockType="plugins.tprovoost.sequenceblocks.infos.GetFileName" className="plugins.tprovoost.sequenceblocks.SequenceBlocks" collapsed="false" definedName="Get file name" height="133" keepsResults="true" width="231" xLocation="200" yLocation="0">
+<variables>
+<input>
+<variable ID="sequence" name="Sequence" runtime="false" visible="true"/>
+<variable ID="folder" name="Folder" runtime="false" value="false" visible="true"/>
+<variable ID="extension" name="Extension" runtime="false" value="false" visible="true"/>
+</input>
+<output>
+<variable ID="name" name="Filename" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="148507260" blockType="plugins.tprovoost.scripteditor.scriptblock.Javascript" className="plugins.tprovoost.scripteditor.scriptblock.Javascript" collapsed="false" definedName="Javascript" height="596" keepsResults="true" width="845" xLocation="29" yLocation="157">
+<variables>
+<input>
+<variable ID="Script" name="" runtime="false" value="importClass(Packages.icy.type.point.Point5D)&#10;importClass(Packages.icy.main.Icy)&#10;importClass(Packages.icy.sequence.SequenceUtil)&#10; &#10;// this script takes a sequence as input, crop it with a ROI,&#10;// and then copy the original ROI and put it at (0,0) location.&#10;// remark: some null-tests are not performed like checking if a sequence exists, if it has ROIs...&#10;// I did not put them to create a light script, easy to read&#10; &#10;sequence = input0;&#10;seqName = sequence.getName(); &#10;// define the ROI for the crop&#10;roiToUse = null;&#10;&#10;    // take ROI&#10;roiToUse = sequence.getROIs().get( input1 );&#10; &#10;// test is a ROI has been found.&#10;if ( roiToUse == null ) throw &quot;CropScript: At least 1 ROI is needed for this operation.&quot;;&#10; &#10;// crop the sequence.&#10;croppedSequence = SequenceUtil.getSubSequence( sequence, roiToUse );&#10; &#10;// display the sequence&#10;//Icy.getMainInterface().addSequence( croppedSequence );&#10; &#10;// get a copy of the ROI&#10;//roiCopy = roiToUse.getCopy();&#10; &#10;//if ( roiCopy.canSetPosition() ) // check if the ROI manage the setPosition method&#10;//{&#10;    //Set the new 5d position&#10;//    roiCopy.setPosition5D( new Point5D.Double( 0 ,0 ,0 ,0 ,0 ) );&#10;//}&#10; &#10;// add the final ROI to the cropped sequence&#10;//croppedSequence.addROI( roiCopy, false );&#10;roiName = roiToUse.getName();&#10;output2 = roiName;&#10;&#10;position = roiToUse.getPosition5D();&#10;size = roiToUse.getBounds5D()&#10;x = Math.round(position.getX()).toString();&#10;y = Math.round(position.getY()).toString();&#10;w = Math.round(size.getSizeX()).toString();&#10;h = Math.round(size.getSizeY()).toString();&#10;&#10;&#10;inputFileName = input2;&#10;//newName = roiName + &quot;_&quot; + inputFileName + &quot;_&quot; + input1;&#10;newName = roiName + &quot;_&quot; + inputFileName + &quot;_&quot; + x + &quot;_&quot; + y + &quot;_&quot; + w + &quot;_&quot; + h;&#10;croppedSequence.setName(newName);&#10;croppedSequence.setFilename(newName);&#10;output0 = croppedSequence;&#10;//output1 = roiCopy;" visible="true"/>
+<variable ID="Add Input" name="Add Input" runtime="false" value="2" visible="true"/>
+<variable ID="Add output" name="Add Output" runtime="false" value="2" visible="true"/>
+<variable ID="input0" name="input0" runtime="false" type="icy.sequence.Sequence" visible="true"/>
+<variable ID="919504760" name="input1" runtime="true" type="int" visible="true"/>
+<variable ID="1243099036" name="input2" runtime="true" type="java.lang.String" visible="true"/>
+</input>
+<output>
+<variable ID="output0" name="output0" runtime="false" type="icy.sequence.Sequence" visible="true"/>
+<variable ID="633115472" name="output1" runtime="true" type="[Licy.roi.ROI;" visible="true"/>
+<variable ID="1405260663" name="output2" runtime="true" type="java.lang.String" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="468372571" blockType="plugins.tprovoost.sequenceblocks.infos.GetOutputFilename" className="plugins.tprovoost.sequenceblocks.SequenceBlocks" collapsed="false" definedName="Get output filename" height="133" keepsResults="true" width="231" xLocation="1168" yLocation="643">
+<variables>
+<input>
+<variable ID="sequence" name="Sequence" runtime="false" visible="true"/>
+<variable ID="folder" name="Folder" runtime="false" value="true" visible="true"/>
+<variable ID="extension" name="Extension" runtime="false" value="true" visible="true"/>
+</input>
+<output>
+<variable ID="outFilename" name="Output filename" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block CommandLineID="" ID="1639678534" blockType="plugins.adufour.blocks.tools.output.FolderOutput" className="plugins.adufour.blocks.tools.output.FolderOutput" collapsed="false" definedName="Folder output" height="61" keepsResults="true" width="180" xLocation="702" yLocation="21">
+<variables>
+<input>
+<variable ID="folder" name="folder" runtime="false" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops" visible="true"/>
+</input>
+<output/>
+</variables>
+</block>
+<block ID="157797991" blockType="plugins.adufour.blocks.tools.text.AppendText" className="plugins.adufour.protocols.Protocols" collapsed="false" definedName="Append text" height="129" keepsResults="true" width="320" xLocation="1226" yLocation="0">
+<variables>
+<input>
+<variable ID="input" name="input" runtime="false" visible="true"/>
+<variable ID="Separator" name="Separator" runtime="false" value="/" visible="true"/>
+<variable ID="Suffix" name="Suffix" runtime="false" visible="true"/>
+</input>
+<output>
+<variable ID="output" name="output" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="811134065" blockType="plugins.adufour.blocks.tools.text.AppendText" className="plugins.adufour.protocols.Protocols" collapsed="false" definedName="Append text" height="128" keepsResults="true" width="318" xLocation="1227" yLocation="136">
+<variables>
+<input>
+<variable ID="input" name="input" runtime="false" visible="true"/>
+<variable ID="Separator" name="Separator" runtime="false" value="/" visible="true"/>
+<variable ID="Suffix" name="Suffix" runtime="false" visible="true"/>
+</input>
+<output>
+<variable ID="output" name="output" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+<block ID="849953622" blockType="plugins.tprovoost.sequenceblocks.files.SaveSequence" className="plugins.tprovoost.sequenceblocks.SequenceBlocks" collapsed="false" definedName="Save sequence" height="155" keepsResults="true" width="245" xLocation="1258" yLocation="292">
+<variables>
+<input>
+<variable ID="file" name="File" runtime="false" type="java.lang.String" visible="true"/>
+<variable ID="sequence" name="Sequence" runtime="false" visible="true"/>
+<variable ID="format" name="Format" runtime="false" value="JPG" visible="true"/>
+<variable ID="overwrite" name="Overwrite" runtime="false" value="true" visible="true"/>
+<variable ID="multiple file" name="Multiple file" runtime="false" value="false" visible="true"/>
+</input>
+<output/>
+</variables>
+</block>
+<block ID="445532710" blockType="plugins.adufour.blocks.tools.io.CreateFolder" className="plugins.adufour.blocks.tools.io.CreateFolder" collapsed="false" definedName="Create folder" height="108" keepsResults="true" width="217" xLocation="1270" yLocation="480">
+<variables>
+<input>
+<variable ID="parent folder" name="Base folder" runtime="false" visible="true"/>
+<variable ID="folder name" name="Folder name" runtime="false" visible="true"/>
+</input>
+<output>
+<variable ID="new folder" name="New folder" runtime="false" visible="true"/>
+</output>
+</variables>
+</block>
+</blocks>
+<links>
+<link dstBlockID="148507260" dstVarID="919504760" srcBlockID="1531107574" srcVarID="iteration"/>
+<link dstBlockID="148507260" dstVarID="1243099036" srcBlockID="1042307889" srcVarID="name"/>
+<link dstBlockID="148507260" dstVarID="input0" srcBlockID="1042307889" srcVarID="sequence"/>
+<link dstBlockID="468372571" dstVarID="sequence" srcBlockID="148507260" srcVarID="output0" srcVarType="icy.sequence.Sequence"/>
+<link dstBlockID="445532710" dstVarID="folder name" srcBlockID="148507260" srcVarID="1405260663" srcVarType="java.lang.String"/>
+<link dstBlockID="157797991" dstVarID="Suffix" srcBlockID="148507260" srcVarID="1405260663" srcVarType="java.lang.String"/>
+<link dstBlockID="849953622" dstVarID="sequence" srcBlockID="468372571" srcVarID="sequence"/>
+<link dstBlockID="811134065" dstVarID="Suffix" srcBlockID="468372571" srcVarID="outFilename"/>
+<link dstBlockID="157797991" dstVarID="input" srcBlockID="1639678534" srcVarID="folder"/>
+<link dstBlockID="445532710" dstVarID="parent folder" srcBlockID="1639678534" srcVarID="folder"/>
+<link dstBlockID="811134065" dstVarID="input" srcBlockID="157797991" srcVarID="output"/>
+<link dstBlockID="849953622" dstVarID="file" srcBlockID="811134065" srcVarID="output"/>
+</links>
+<variables>
+<input>
+<variable ID="start" blockID="1531107574" value="0" visible="true"/>
+<variable ID="step" blockID="1531107574" value="1" visible="true"/>
+<variable ID="end" blockID="1531107574" value="148" visible="true"/>
+<variable ID="1042307889:sequence" blockID="1042307889" value="/icylinks/plakplaten/0008_KaBt/icy-annotaties_Erik-Marco/0008_KaBt_20220812_0145.jpg" visible="true"/>
+<variable ID="1042307889:folder" blockID="1042307889" value="false" visible="false"/>
+<variable ID="1042307889:extension" blockID="1042307889" value="false" visible="false"/>
+<variable ID="148507260:Script" blockID="148507260" value="importClass(Packages.icy.type.point.Point5D)&#10;importClass(Packages.icy.main.Icy)&#10;importClass(Packages.icy.sequence.SequenceUtil)&#10; &#10;// this script takes a sequence as input, crop it with a ROI,&#10;// and then copy the original ROI and put it at (0,0) location.&#10;// remark: some null-tests are not performed like checking if a sequence exists, if it has ROIs...&#10;// I did not put them to create a light script, easy to read&#10; &#10;sequence = input0;&#10;seqName = sequence.getName(); &#10;// define the ROI for the crop&#10;roiToUse = null;&#10;&#10;    // take ROI&#10;roiToUse = sequence.getROIs().get( input1 );&#10; &#10;// test is a ROI has been found.&#10;if ( roiToUse == null ) throw &quot;CropScript: At least 1 ROI is needed for this operation.&quot;;&#10; &#10;// crop the sequence.&#10;croppedSequence = SequenceUtil.getSubSequence( sequence, roiToUse );&#10; &#10;// display the sequence&#10;//Icy.getMainInterface().addSequence( croppedSequence );&#10; &#10;// get a copy of the ROI&#10;//roiCopy = roiToUse.getCopy();&#10; &#10;//if ( roiCopy.canSetPosition() ) // check if the ROI manage the setPosition method&#10;//{&#10;    //Set the new 5d position&#10;//    roiCopy.setPosition5D( new Point5D.Double( 0 ,0 ,0 ,0 ,0 ) );&#10;//}&#10; &#10;// add the final ROI to the cropped sequence&#10;//croppedSequence.addROI( roiCopy, false );&#10;roiName = roiToUse.getName();&#10;output2 = roiName;&#10;&#10;position = roiToUse.getPosition5D();&#10;size = roiToUse.getBounds5D()&#10;x = Math.round(position.getX()).toString();&#10;y = Math.round(position.getY()).toString();&#10;w = Math.round(size.getSizeX()).toString();&#10;h = Math.round(size.getSizeY()).toString();&#10;&#10;&#10;inputFileName = input2;&#10;//newName = roiName + &quot;_&quot; + inputFileName + &quot;_&quot; + input1;&#10;newName = roiName + &quot;_&quot; + inputFileName + &quot;_&quot; + x + &quot;_&quot; + y + &quot;_&quot; + w + &quot;_&quot; + h;&#10;croppedSequence.setName(newName);&#10;croppedSequence.setFilename(newName);&#10;output0 = croppedSequence;&#10;//output1 = roiCopy;" visible="false"/>
+<variable ID="148507260:Add Input" blockID="148507260" value="2" visible="false"/>
+<variable ID="148507260:Add output" blockID="148507260" value="2" visible="false"/>
+<variable ID="148507260:input0" blockID="148507260" value="" visible="false"/>
+<variable ID="148507260:919504760" blockID="148507260" value="" visible="false"/>
+<variable ID="148507260:1243099036" blockID="148507260" value="" visible="false"/>
+<variable ID="468372571:sequence" blockID="468372571" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops/ss/ss_0008_KaBt_20220812_0145_2034_7334_72_65.jpg" visible="false"/>
+<variable ID="468372571:folder" blockID="468372571" value="true" visible="false"/>
+<variable ID="468372571:extension" blockID="468372571" value="true" visible="false"/>
+<variable ID="1639678534:folder" blockID="1639678534" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops" visible="false"/>
+<variable ID="157797991:input" blockID="157797991" value="" visible="false"/>
+<variable ID="157797991:Separator" blockID="157797991" value="/" visible="false"/>
+<variable ID="157797991:Suffix" blockID="157797991" value="ss" visible="false"/>
+<variable ID="811134065:input" blockID="811134065" value="" visible="false"/>
+<variable ID="811134065:Separator" blockID="811134065" value="/" visible="false"/>
+<variable ID="811134065:Suffix" blockID="811134065" value="ss_0008_KaBt_20220812_0145_2034_7334_72_65" visible="false"/>
+<variable ID="849953622:file" blockID="849953622" value="" visible="false"/>
+<variable ID="849953622:sequence" blockID="849953622" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops/ss/ss_0008_KaBt_20220812_0145_2034_7334_72_65.jpg" visible="false"/>
+<variable ID="849953622:format" blockID="849953622" value="JPG" visible="false"/>
+<variable ID="849953622:overwrite" blockID="849953622" value="true" visible="false"/>
+<variable ID="849953622:multiple file" blockID="849953622" value="false" visible="false"/>
+<variable ID="445532710:parent folder" blockID="445532710" value="" visible="false"/>
+<variable ID="445532710:folder name" blockID="445532710" value="ss" visible="false"/>
+</input>
+<output>
+<variable ID="iteration" blockID="1531107574" visible="true"/>
+<variable ID="index" blockID="1531107574" visible="true"/>
+<variable ID="1042307889:name" blockID="1042307889" visible="false"/>
+<variable ID="148507260:output0" blockID="148507260" visible="false"/>
+<variable ID="148507260:633115472" blockID="148507260" visible="false"/>
+<variable ID="148507260:1405260663" blockID="148507260" visible="false"/>
+<variable ID="468372571:outFilename" blockID="468372571" visible="false"/>
+<variable ID="157797991:output" blockID="157797991" visible="false"/>
+<variable ID="811134065:output" blockID="811134065" visible="false"/>
+<variable ID="445532710:new folder" blockID="445532710" visible="false"/>
+</output>
+</variables>
+</workflow>
+</blocks>
+<links>
+<link dstBlockID="1775930538" dstVarID="input sequence" srcBlockID="1078018877" srcVarID="Sequence"/>
+<link dstBlockID="708573638" dstVarID="list" srcBlockID="1775930538" srcVarID="extracted rois"/>
+<link dstBlockID="1531107574" dstVarID="1042307889:sequence" srcBlockID="1775930538" srcVarID="input sequence"/>
+<link dstBlockID="1531107574" dstVarID="end" srcBlockID="708573638" srcVarID="size"/>
+</links>
+<variables>
+<input>
+<variable ID="folder" blockID="1078018877" value="/icylinks/plakplaten/0008_KaBt/icy-annotaties_Erik-Marco" visible="true"/>
+<variable ID="extension" blockID="1078018877" value="jpg" visible="true"/>
+<variable ID="Include sub-folders" blockID="1078018877" value="true" visible="true"/>
+<variable ID="1775930538:input sequence" blockID="1775930538" value="/icylinks/plakplaten/0008_KaBt/icy-annotaties_Erik-Marco/0008_KaBt_20220812_0145.jpg" visible="false"/>
+<variable ID="1775930538:selection state of ROI to extract" blockID="1775930538" value="ALL" visible="false"/>
+<variable ID="708573638:list" blockID="708573638" value="" visible="false"/>
+<variable ID="1531107574:start" blockID="1531107574" value="0" visible="false"/>
+<variable ID="1531107574:step" blockID="1531107574" value="1" visible="false"/>
+<variable ID="1531107574:end" blockID="1531107574" value="148" visible="false"/>
+<variable ID="1531107574:1042307889:sequence" blockID="1531107574" value="/icylinks/plakplaten/0008_KaBt/icy-annotaties_Erik-Marco/0008_KaBt_20220812_0145.jpg" visible="false"/>
+<variable ID="1531107574:1042307889:folder" blockID="1531107574" value="false" visible="false"/>
+<variable ID="1531107574:1042307889:extension" blockID="1531107574" value="false" visible="false"/>
+<variable ID="1531107574:148507260:Script" blockID="1531107574" value="importClass(Packages.icy.type.point.Point5D)&#10;importClass(Packages.icy.main.Icy)&#10;importClass(Packages.icy.sequence.SequenceUtil)&#10; &#10;// this script takes a sequence as input, crop it with a ROI,&#10;// and then copy the original ROI and put it at (0,0) location.&#10;// remark: some null-tests are not performed like checking if a sequence exists, if it has ROIs...&#10;// I did not put them to create a light script, easy to read&#10; &#10;sequence = input0;&#10;seqName = sequence.getName(); &#10;// define the ROI for the crop&#10;roiToUse = null;&#10;&#10;    // take ROI&#10;roiToUse = sequence.getROIs().get( input1 );&#10; &#10;// test is a ROI has been found.&#10;if ( roiToUse == null ) throw &quot;CropScript: At least 1 ROI is needed for this operation.&quot;;&#10; &#10;// crop the sequence.&#10;croppedSequence = SequenceUtil.getSubSequence( sequence, roiToUse );&#10; &#10;// display the sequence&#10;//Icy.getMainInterface().addSequence( croppedSequence );&#10; &#10;// get a copy of the ROI&#10;//roiCopy = roiToUse.getCopy();&#10; &#10;//if ( roiCopy.canSetPosition() ) // check if the ROI manage the setPosition method&#10;//{&#10;    //Set the new 5d position&#10;//    roiCopy.setPosition5D( new Point5D.Double( 0 ,0 ,0 ,0 ,0 ) );&#10;//}&#10; &#10;// add the final ROI to the cropped sequence&#10;//croppedSequence.addROI( roiCopy, false );&#10;roiName = roiToUse.getName();&#10;output2 = roiName;&#10;&#10;position = roiToUse.getPosition5D();&#10;size = roiToUse.getBounds5D()&#10;x = Math.round(position.getX()).toString();&#10;y = Math.round(position.getY()).toString();&#10;w = Math.round(size.getSizeX()).toString();&#10;h = Math.round(size.getSizeY()).toString();&#10;&#10;&#10;inputFileName = input2;&#10;//newName = roiName + &quot;_&quot; + inputFileName + &quot;_&quot; + input1;&#10;newName = roiName + &quot;_&quot; + inputFileName + &quot;_&quot; + x + &quot;_&quot; + y + &quot;_&quot; + w + &quot;_&quot; + h;&#10;croppedSequence.setName(newName);&#10;croppedSequence.setFilename(newName);&#10;output0 = croppedSequence;&#10;//output1 = roiCopy;" visible="false"/>
+<variable ID="1531107574:148507260:Add Input" blockID="1531107574" value="2" visible="false"/>
+<variable ID="1531107574:148507260:Add output" blockID="1531107574" value="2" visible="false"/>
+<variable ID="1531107574:148507260:input0" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:148507260:919504760" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:148507260:1243099036" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:468372571:sequence" blockID="1531107574" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops/ss/ss_0008_KaBt_20220812_0145_2034_7334_72_65.jpg" visible="false"/>
+<variable ID="1531107574:468372571:folder" blockID="1531107574" value="true" visible="false"/>
+<variable ID="1531107574:468372571:extension" blockID="1531107574" value="true" visible="false"/>
+<variable ID="1531107574:1639678534:folder" blockID="1531107574" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops" visible="false"/>
+<variable ID="1531107574:157797991:input" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:157797991:Separator" blockID="1531107574" value="/" visible="false"/>
+<variable ID="1531107574:157797991:Suffix" blockID="1531107574" value="ss" visible="false"/>
+<variable ID="1531107574:811134065:input" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:811134065:Separator" blockID="1531107574" value="/" visible="false"/>
+<variable ID="1531107574:811134065:Suffix" blockID="1531107574" value="ss_0008_KaBt_20220812_0145_2034_7334_72_65" visible="false"/>
+<variable ID="1531107574:849953622:file" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:849953622:sequence" blockID="1531107574" value="/icylinks/plakplaten/0008_KaBt/icy_Erik-Marko_crops/ss/ss_0008_KaBt_20220812_0145_2034_7334_72_65.jpg" visible="false"/>
+<variable ID="1531107574:849953622:format" blockID="1531107574" value="JPG" visible="false"/>
+<variable ID="1531107574:849953622:overwrite" blockID="1531107574" value="true" visible="false"/>
+<variable ID="1531107574:849953622:multiple file" blockID="1531107574" value="false" visible="false"/>
+<variable ID="1531107574:445532710:parent folder" blockID="1531107574" value="" visible="false"/>
+<variable ID="1531107574:445532710:folder name" blockID="1531107574" value="ss" visible="false"/>
+</input>
+<output>
+<variable ID="iteration" blockID="1078018877" visible="true"/>
+<variable ID="Sequence" blockID="1078018877" visible="true"/>
+<variable ID="1775930538:extracted rois" blockID="1775930538" visible="false"/>
+<variable ID="708573638:size" blockID="708573638" visible="false"/>
+<variable ID="1531107574:iteration" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:index" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:1042307889:name" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:148507260:output0" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:148507260:633115472" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:148507260:1405260663" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:468372571:outFilename" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:157797991:output" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:811134065:output" blockID="1531107574" visible="false"/>
+<variable ID="1531107574:445532710:new folder" blockID="1531107574" visible="false"/>
+</output>
+</variables>
+</workflow>
+</blocks>
+<links/>
+</protocol>
